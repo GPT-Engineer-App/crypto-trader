@@ -3,10 +3,15 @@ import { Box, Heading, Text, VStack, Grid, Table, Thead, Tbody, Tr, Th, Td, Tabl
 import { FaCoins } from "react-icons/fa";
 
 const samplePrices = {
-  BTC: 50000,
-  ETH: 2000,
-  XRP: 0.5,
-  ADA: 1.2,
+  BTC: { price: 50000, prevPrice: 48000 },
+  ETH: { price: 2000, prevPrice: 2100 },
+  XRP: { price: 0.5, prevPrice: 0.48 },
+  ADA: { price: 1.2, prevPrice: 1.15 },
+};
+
+const calculatePriceChange = (currentPrice, prevPrice) => {
+  const change = ((currentPrice - prevPrice) / prevPrice) * 100;
+  return change.toFixed(2);
 };
 
 const Index = () => {
@@ -84,15 +89,22 @@ const Index = () => {
                   <Tr>
                     <Th>코인</Th>
                     <Th isNumeric>시세</Th>
+                    <Th isNumeric>변동률</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {Object.entries(samplePrices).map(([coin, price]) => (
-                    <Tr key={coin}>
-                      <Td>{coin}</Td>
-                      <Td isNumeric>{price.toLocaleString()} 원</Td>
-                    </Tr>
-                  ))}
+                  {Object.entries(samplePrices).map(([coin, { price, prevPrice }]) => {
+                    const change = calculatePriceChange(price, prevPrice);
+                    return (
+                      <Tr key={coin}>
+                        <Td>{coin}</Td>
+                        <Td isNumeric>{price.toLocaleString()} 원</Td>
+                        <Td isNumeric color={change >= 0 ? "green.500" : "red.500"}>
+                          {change}%
+                        </Td>
+                      </Tr>
+                    );
+                  })}
                 </Tbody>
               </Table>
             </TableContainer>
