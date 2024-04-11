@@ -7,6 +7,9 @@ const samplePrices = {
   ETH: 2000,
   XRP: 0.5,
   ADA: 1.2,
+  DOGE: 0.002,
+  MATIC: 0.8,
+  SOL: 18,
 };
 
 const Index = () => {
