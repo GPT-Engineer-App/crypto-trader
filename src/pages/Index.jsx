@@ -3,14 +3,14 @@ import { Box, Heading, Text, VStack, Grid, Table, Thead, Tbody, Tr, Th, Td, Tabl
 import { FaCoins } from "react-icons/fa";
 
 const samplePrices = {
-  BTC: { price: 50000, prevPrice: 48000 },
-  ETH: { price: 2000, prevPrice: 2100 },
-  XRP: { price: 0.5, prevPrice: 0.48 },
-  ADA: { price: 1.2, prevPrice: 1.15 },
+  BTC: { price: 50000, prevPrice: 48000, volume: 100000, prevVolume: 90000 },
+  ETH: { price: 2000, prevPrice: 2100, volume: 50000, prevVolume: 45000 },
+  XRP: { price: 0.5, prevPrice: 0.48, volume: 1000000, prevVolume: 950000 },
+  ADA: { price: 1.2, prevPrice: 1.15, volume: 200000, prevVolume: 180000 },
 };
 
-const calculatePriceChange = (currentPrice, prevPrice) => {
-  const change = ((currentPrice - prevPrice) / prevPrice) * 100;
+const calculateChange = (current, prev) => {
+  const change = ((current - prev) / prev) * 100;
   return change.toFixed(2);
 };
 
@@ -93,14 +93,18 @@ const Index = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {Object.entries(samplePrices).map(([coin, { price, prevPrice }]) => {
-                    const change = calculatePriceChange(price, prevPrice);
+                  {Object.entries(samplePrices).map(([coin, { price, prevPrice, volume, prevVolume }]) => {
+                    const priceChange = calculateChange(price, prevPrice);
+                    const volumeChange = calculateChange(volume, prevVolume);
                     return (
                       <Tr key={coin}>
                         <Td>{coin}</Td>
                         <Td isNumeric>{price.toLocaleString()} 원</Td>
-                        <Td isNumeric color={change >= 0 ? "green.500" : "red.500"}>
-                          {change}%
+                        <Td isNumeric color={priceChange >= 0 ? "green.500" : "red.500"}>
+                          {priceChange}%
+                        </Td>
+                        <Td isNumeric color={volumeChange >= 0 ? "green.500" : "red.500"}>
+                          {volumeChange}%
                         </Td>
                       </Tr>
                     );
